@@ -10,21 +10,22 @@ if (process.env.SYNCHRONIZE == 'true') {
    synchronize = true
 }
 export const config: ConnectionOptions = {
+   name:'default',
+   host: "localhost",
    type: 'mysql',
-   "host": "localhost",
-   "port": 3306,
-   "username": "root",
-   "password": process.env.DB_PSW,
-   "database": "mt_mall",
-   "logging": true,
-   "entities": [
+   port: 3306,
+   username: "root",
+   password: process.env.DB_PSW,
+   database: "mt_mall",
+   logging: true,
+   entities: [
       __dirname + "/**/*.entity.js"
    ],
-   "migrations": [
+   migrations: [
       __dirname + "/migration/*.js"
    ],
    synchronize,
-   "cli": {
-      "migrationsDir": "../migration"
+   cli: {
+      migrationsDir: "../migration"
    }
 }

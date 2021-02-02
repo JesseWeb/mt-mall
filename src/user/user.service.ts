@@ -8,7 +8,7 @@ export class UserService {
    constructor(@InjectRepository(UserEntity) private UserRepository: Repository<UserEntity>) {
 
    }
-   getUser(uuid) {
+   getUserByUUID(uuid) {
       return this.UserRepository.find({
          where: {
             uuid
@@ -17,5 +17,12 @@ export class UserService {
    }
    createUser(user: UserEntity) {
       return this.UserRepository.save(user)
+   }
+   getUserByUsername(username: string) {
+      return this.UserRepository.findOne({
+         where: {
+            username
+         }
+      })
    }
 }

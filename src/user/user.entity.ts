@@ -1,4 +1,4 @@
-import { Column, Entity, Generated, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Column, Entity, Generated, PrimaryGeneratedColumn } from "typeorm";
 
 
 enum EUSER {
@@ -8,6 +8,15 @@ enum EUSER {
 }
 @Entity('user')
 export class UserEntity {
+   @Column('datetime', { name: 'created_at'})
+   createdAt?: Date
+
+   @Column('datetime', { name: 'updated_at'})
+   updatedAt?: Date
+
+   @Column('datetime', { name: 'deleted_at', nullable: true, default: null })
+   deletedAt?: Date
+
    @PrimaryGeneratedColumn('increment')
    id?: string
 
@@ -17,10 +26,10 @@ export class UserEntity {
    @Column({ nullable: true })
    realname?: string
 
-   @Column({nullable: true})
+   @Column({ nullable: true })
    openid?: string
 
-   @Column({nullable: true})
+   @Column({ nullable: true })
    unionid?: string
 
    @Column({
@@ -28,13 +37,16 @@ export class UserEntity {
    })
    status?: EUSER
 
-   @Column({nullable: true})
+   @Column({ nullable: true })
    username?: string
 
-   @Column({nullable: true})
+   @Column({ nullable: true })
    password?: string
 
 
-   @Column({nullable: true})
+   @Column({ nullable: true })
    nickname: string
+
+
+
 }

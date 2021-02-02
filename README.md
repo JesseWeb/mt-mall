@@ -13,3 +13,8 @@ DB_PWS=你的数据库密码
 
 3) 开启开发者模式 `npm run start:dev` 
 
+
+#### Hint
+ormconfig.ts中可对数据库进行相关设置，参考 [TypeORM](https://typeorm.io/#/using-ormconfig/using-ormconfigjs)
+
+

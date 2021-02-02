@@ -1,38 +1,32 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-
 @Injectable()
-export class TokenGuard implements CanActivate {
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const request = context.switchToHttp().getRequest()
-    return this.validateRequest(request)
-  }
-  validateRequest(request) {
-    return true
-  }
-}
+export class RolesGuard implements CanActivate {
+  constructor(private readonly reflector: Reflector) { }
 
-@Injectable()
-export class RoleGuard implements CanActivate {
-  constructor(private reflector: Reflector) { }
-  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+  canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
     if (!roles) {
-      return true
+      return true;
     }
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    return this.matchRoles(roles, user.roles);
-  }
-
-  matchRoles(roles: string[], userRoles: string[]) {
-    return roles.find((role, index) => {
-      return userRoles.includes(role)
-    }) ? true : false
+    const hasRole = () => {
+      return user.roles.some(role => !!roles.find(item => item === role))
+    };
+    return user && user.roles && hasRole();
   }
 }
 
-
+@Injectable()
+export class SessionGuard implements CanActivate {
+  constructor(private readonly reflector: Reflector) { }
+  canActivate(context: ExecutionContext) {
+    const request = context.switchToHttp().getRequest();
+    const userSession = request.session?.user
+    if (userSession) {
+      return true
+    }
+    throw new UnauthorizedException()
+  }
+}
