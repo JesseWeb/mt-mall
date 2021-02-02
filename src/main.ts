@@ -6,6 +6,7 @@ import { getRepository } from 'typeorm';
 import { TypeormStore } from 'connect-typeorm/out';
 import { HttpExceptionFilter } from './shared/httpException.filter';
 import { TransformInterceptor } from './shared/transform.interceptor';
+import { ValidationPipe } from './pipe/validation.pipe';
 
 
 async function bootstrap() {
@@ -16,8 +17,8 @@ async function bootstrap() {
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7
     },
-    resave:false,
-    saveUninitialized:false,
+    resave: false,
+    saveUninitialized: false,
     store: new TypeormStore({
       cleanupLimit: 2,
       limitSubquery: false, // If using MariaDB.
@@ -26,6 +27,7 @@ async function bootstrap() {
   }))
   app.useGlobalFilters(new HttpExceptionFilter())
   app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalPipes(new ValidationPipe())
   await app.listen(3000);
 
 }
