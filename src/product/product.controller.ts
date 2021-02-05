@@ -1,13 +1,18 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { CreateProductDto } from './dto/createProduct.dto';
 import { ProductService } from './product.service';
 
 @Controller('product')
 export class ProductController {
    constructor(private productService: ProductService) {
-
    }
    @Get()
-   findOne(@Query() query): any {
-      this.productService.findOne(query.id)
+   findAll(@Query() query): any {
+      this.productService.findAll()
    }
+   @Post()
+   async create(@Body() body: CreateProductDto) {
+      return await this.productService.create(body)
+   }
+
 }

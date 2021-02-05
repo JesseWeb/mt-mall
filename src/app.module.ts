@@ -12,12 +12,13 @@ import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { SessionModule } from './session/session.module';
+import { StoreModule } from './store/store.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: `../env/${process.env.NODE_ENV}.env`
     }),
-    TypeOrmModule.forRoot(config), ProductModule, UserModule, AuthModule, SessionModule],
+    TypeOrmModule.forRoot(config), ProductModule, UserModule, AuthModule, SessionModule, StoreModule],
   controllers: [AppController, ProductController, UserController],
   providers: [AppService, ProductService, UserService],
 })

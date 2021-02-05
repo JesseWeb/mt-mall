@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { StoreEntity } from 'src/store/store.entity';
 import { Repository } from 'typeorm';
 import { ProductEntity } from './product.entity';
 
@@ -7,18 +8,23 @@ import { ProductEntity } from './product.entity';
 export class ProductService {
    constructor(
       @InjectRepository(ProductEntity)
-      private productRepository: Repository<ProductEntity>,
+      private repo: Repository<ProductEntity>,
    ) { }
 
    findAll(): Promise<ProductEntity[]> {
-      return this.productRepository.find();
+      return this.repo.find();
    }
 
-   findOne(id: string): Promise<ProductEntity> {
-      return this.productRepository.findOne(id);
+   findOne(id: number): Promise<ProductEntity> {
+      return this.repo.findOne(id);
    }
 
    async remove(id: string): Promise<void> {
-      await this.productRepository.delete(id);
+      await this.repo.delete(id);
+   }
+
+   async create(product: ProductEntity) {
+      let productTobeSave = this.repo.create(product)
+      return await this.repo.save(productTobeSave)
    }
 }

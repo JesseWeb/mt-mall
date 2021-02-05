@@ -1,6 +1,4 @@
 import { Body, Controller, Post, Req, Session, UnauthorizedException, UseGuards } from '@nestjs/common';
-import { SessionGuard } from 'src/shared/user.guard';
-import { UserEntity } from 'src/user/user.entity';
 import { AuthService } from './auth.service';
 
 @Controller('auth')

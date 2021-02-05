@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BaseProvider } from 'src/core/baseProvider';
 import { Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 
 @Injectable()
-export class UserService {
+export class UserService extends BaseProvider {
    constructor(@InjectRepository(UserEntity) private UserRepository: Repository<UserEntity>) {
-
+      super()
    }
    getUserByUUID(uuid) {
       return this.UserRepository.find({
@@ -23,6 +24,11 @@ export class UserService {
          where: {
             username
          }
+      })
+   }
+   deleteUser(uuid: string) {
+      return this.UserRepository.softDelete({
+         uuid
       })
    }
 }

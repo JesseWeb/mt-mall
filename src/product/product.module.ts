@@ -5,15 +5,16 @@ import { ProductEntity } from './product.entity';
 import { ProductService } from './product.service';
 
 @Module({
-   imports:[TypeOrmModule.forFeature([ProductEntity])],
+   imports: [TypeOrmModule.forFeature([ProductEntity])],
    providers: [
       ProductService
    ],
-   controllers:[
+   controllers: [
       ProductController
    ],
-   exports:[
-      TypeOrmModule
+   exports: [
+      ProductService,
+      TypeOrmModule,
    ]
 })
 export class ProductModule { }

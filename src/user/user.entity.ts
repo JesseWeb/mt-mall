@@ -1,4 +1,4 @@
-import { Column, Entity, Generated, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Generated, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
 
 
 enum EUSER {
@@ -8,19 +8,18 @@ enum EUSER {
 }
 @Entity('user')
 export class UserEntity {
-   @Column('datetime', { name: 'created_at'})
-   createdAt?: Date
-
-   @Column('datetime', { name: 'updated_at'})
-   updatedAt?: Date
-
-   @Column('datetime', { name: 'deleted_at', nullable: true, default: null })
-   deletedAt?: Date
+   @CreateDateColumn({ type: `timestamp` })
+   createdAt?: string
+   @UpdateDateColumn({ type: `timestamp` })
+   updatedAt?: string
+   @DeleteDateColumn({ type: `timestamp` })
+   deletedAt?: string;
 
    @PrimaryGeneratedColumn('increment')
    id?: string
 
    @Generated('uuid')
+   @Column('uuid')
    uuid?: string
 
    @Column({ nullable: true })

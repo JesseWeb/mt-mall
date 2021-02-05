@@ -20,7 +20,6 @@ export class RolesGuard implements CanActivate {
 
 @Injectable()
 export class SessionGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) { }
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
     const userSession = request.session?.user
