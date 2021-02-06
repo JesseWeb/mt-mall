@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { UserEntity } from 'src/user/user.entity';
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) { }
@@ -10,9 +11,10 @@ export class RolesGuard implements CanActivate {
       return true;
     }
     const request = context.switchToHttp().getRequest();
-    const user = request.user;
+    const user: UserEntity = request.session.user;
+    user.roles = user.roles || []
     const hasRole = () => {
-      return user.roles.some(role => !!roles.find(item => item === role))
+      return user.roles.some(role => !!roles.find(item => item === role.name))
     };
     return user && user.roles && hasRole();
   }

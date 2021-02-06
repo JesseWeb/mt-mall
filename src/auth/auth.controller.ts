@@ -14,8 +14,8 @@ export class AuthController {
             success: 1
          }
       }
-      throw new UnauthorizedException()
-     
+      throw new UnauthorizedException('账号或密码错误')
+
 
    }
 }

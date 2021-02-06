@@ -18,13 +18,14 @@ export class StoreService extends BaseProvider {
    async relate(storeId: number, productId: number) {
       let store = await this.findOneById(storeId)
       let product = await this.productService.findOne(productId)
-      store.products = [].concat(store.products, product)
+      store.products = store.products || []
+      store.products.push(product)
       return await this.repo.save(store)
    }
    async findOneById(id: number) {
       return this.repo.createQueryBuilder('store').where({
          id
-      }).select([`store.id`,`store.name`,'products.id','products.name']).leftJoin('store.products','products').getOne()
+      }).select([`store.id`, `store.name`, 'products.id', 'products.name']).leftJoin('store.products', 'products').getOne()
    }
 }
 

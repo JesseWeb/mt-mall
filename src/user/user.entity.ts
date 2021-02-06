@@ -1,4 +1,5 @@
-import { Column, Entity, Generated, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
+import { RoleEntity } from "src/role/role.entity";
+import { Column, Entity, Generated, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable } from "typeorm";
 
 
 enum EUSER {
@@ -47,5 +48,7 @@ export class UserEntity {
    nickname: string
 
 
-
+   @ManyToMany(() => RoleEntity, role => role.users)
+   @JoinTable()
+   roles?: RoleEntity[];
 }
