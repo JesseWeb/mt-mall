@@ -1,11 +1,10 @@
-import { Body, Controller, Delete, Get, Post, Query, Req, Res, Session, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Body, Controller, Delete, Get, Post, Put, Query, Req, Res, Session, UseGuards } from '@nestjs/common';
 import { Response, Request } from 'express';
-import { ValidationPipe } from 'src/pipe/validation.pipe';
 import { Role } from 'src/shared/role.decorator';
-import { SessionGuard } from 'src/shared/guards';
+import { RolesGuard, SessionGuard } from 'src/shared/guards';
 import { SigninDto } from './dto/signin.dto';
 import { UserService } from './user.service';
+import { BindRole } from './dto/bindRole.dto';
 
 @Controller('user')
 // @UseGuards(RolesGuard)
@@ -13,15 +12,16 @@ export class UserController {
    constructor(private UserService: UserService) {
 
    }
-   @Post('create')
-   // @Role('admin')
-   async create(@Res() res: Response, @Req() req: Request, @Body() body) {
+   @Post()
+   @Role('系统管理员')
+   @UseGuards(RolesGuard)
+   async create(@Req() req: Request, @Body() body) {
       await this.UserService.createUser({
          nickname: body.nickname,
          username: body.username,
          password: body.password
       })
-      res.send('success')
+      return `success`
    }
    @Delete()
    async delete(@Body() body) {
@@ -34,8 +34,14 @@ export class UserController {
       return session.user
    }
 
-   @Get('signin')
-   async signin(@Query() query: SigninDto) {
-      return {}
+   @Put('bind_role')
+   async bindRole(@Body() body: BindRole) {
+      return this.UserService.bindRole(body.userId, body.roleId)
+   }
+
+
+   @Get('get_user_of_role')
+   async fineUserOfRole(@Query() query) {
+      return await this.UserService.findUserOfRole(query.roleId)
    }
 }
