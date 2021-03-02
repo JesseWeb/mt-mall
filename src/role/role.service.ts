@@ -55,4 +55,8 @@ export class RoleService extends BaseProvider {
    save(roleEntity: RoleEntity) {
       return this.roleRepo.save(roleEntity)
    }
+
+   softDelete(id:number){
+      return this.roleRepo.softDelete(id)
+   }
 }

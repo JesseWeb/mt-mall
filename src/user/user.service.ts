@@ -10,7 +10,7 @@ export class UserService extends BaseProvider {
    constructor(@InjectRepository(UserEntity) private userRepo: Repository<UserEntity>, private roleService: RoleService) {
       super()
    }
-   getUserByUUID(uuid) {
+   getUserByUUID(uuid:string) {
       return this.userRepo.find({
          where: {
             uuid
@@ -47,7 +47,7 @@ export class UserService extends BaseProvider {
       user.roles.push(role)
       return await this.userRepo.save(user)
    }
-   async findUserOfRole(roleId) {
+   async findUserOfRole(roleId:number) {
       return this.userRepo.createQueryBuilder('user')
          .where((qb) => {
             const subQuery = qb.subQuery()

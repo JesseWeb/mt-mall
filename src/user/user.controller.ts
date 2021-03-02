@@ -5,6 +5,7 @@ import { RolesGuard, SessionGuard } from 'src/shared/guards';
 import { SigninDto } from './dto/signin.dto';
 import { UserService } from './user.service';
 import { BindRole } from './dto/bindRole.dto';
+import { AnyRecord } from 'dns';
 
 @Controller('user')
 // @UseGuards(RolesGuard)
@@ -41,7 +42,7 @@ export class UserController {
 
 
    @Get('get_user_of_role')
-   async fineUserOfRole(@Query() query) {
+   async fineUserOfRole(@Query() query: AnyObject) {
       return await this.UserService.findUserOfRole(query.roleId)
    }
 }

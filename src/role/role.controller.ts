@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { SessionGuard } from 'src/shared/guards';
 import { CreateRoleDto } from './dto/createRole.dto';
+import { DeleteRoleDto } from './dto/deleteRoleDto';
 import { GetAllDto } from './dto/getAll.dto';
 import { RoleService } from './role.service';
 
@@ -25,7 +26,7 @@ export class RoleController {
    }
 
    @Delete()
-   async deleteRole(@Body() body) {
-
+   async deleteRole(@Body() body: DeleteRoleDto) {
+      return this.roleService.softDelete(body.id)
    }
 }
