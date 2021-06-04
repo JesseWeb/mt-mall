@@ -10,7 +10,7 @@ export class UserService extends BaseProvider {
    constructor(@InjectRepository(UserEntity) private userRepo: Repository<UserEntity>, private roleService: RoleService) {
       super()
    }
-   getUserByUUID(uuid:string) {
+   getUserByUUID(uuid: string) {
       return this.userRepo.find({
          where: {
             uuid
@@ -35,9 +35,13 @@ export class UserService extends BaseProvider {
    }
    update() {
    }
-
+   getUserProfile(id: number) {
+      return this.userRepo.createQueryBuilder('user').where({
+         id
+      }).leftJoinAndSelect('user.roles', 'roles').getOne()
+   }
    async bindRole(userId: number, roleId: number) {
-      let role = await this.roleService.findOne(roleId)
+      let role = await this.roleService.findOneRole(roleId)
       let user = await this.userRepo.createQueryBuilder('user').where({
          id: userId
       }).leftJoinAndSelect('user.roles', 'roles').getOne()
@@ -47,7 +51,7 @@ export class UserService extends BaseProvider {
       user.roles.push(role)
       return await this.userRepo.save(user)
    }
-   async findUserOfRole(roleId:number) {
+   async findUserOfRole(roleId: number) {
       return this.userRepo.createQueryBuilder('user')
          .where((qb) => {
             const subQuery = qb.subQuery()
@@ -58,7 +62,7 @@ export class UserService extends BaseProvider {
             return `user.id in ${subQuery}`
          })
          .leftJoin('user.roles', 'roles')
-         .select([`user.id`, `user.nickname`,`roles.name`,`roles.id`])
+         .select([`user.id`, `user.nickname`, `roles.name`, `roles.id`])
          .getMany()
    }
 }

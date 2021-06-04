@@ -5,10 +5,8 @@ import { RolesGuard, SessionGuard } from 'src/shared/guards';
 import { SigninDto } from './dto/signin.dto';
 import { UserService } from './user.service';
 import { BindRole } from './dto/bindRole.dto';
-import { AnyRecord } from 'dns';
 
 @Controller('user')
-// @UseGuards(RolesGuard)
 export class UserController {
    constructor(private UserService: UserService) {
 
@@ -20,7 +18,7 @@ export class UserController {
       await this.UserService.createUser({
          nickname: body.nickname,
          username: body.username,
-         password: body.password
+         password: body.password,
       })
       return `success`
    }
@@ -32,12 +30,15 @@ export class UserController {
    @UseGuards(SessionGuard)
    @Get('profile')
    async profile(@Session() session) {
-      return session.user
+      let id = session.user.id
+      let res = await this.UserService.getUserProfile(id)
+      return res
+      // return session.user
    }
 
    @Put('bind_role')
    async bindRole(@Body() body: BindRole) {
-      return this.UserService.bindRole(body.userId, body.roleId)
+      return this.UserService.bindRole(Number(body.userId), Number(body.roleId))
    }
 
 

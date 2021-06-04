@@ -1,5 +1,6 @@
+import { ContestEntity } from "src/contest/contest.entity";
 import { RoleEntity } from "src/role/role.entity";
-import { Column, Entity, Generated, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable } from "typeorm";
+import { Column, Entity, Generated, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
 
 
 enum EUSER {
@@ -17,7 +18,7 @@ export class UserEntity {
    deletedAt?: string;
 
    @PrimaryGeneratedColumn('increment')
-   id?: string
+   id?: number
 
    @Generated('uuid')
    @Column('uuid')
@@ -47,8 +48,14 @@ export class UserEntity {
    @Column({ nullable: true })
    nickname: string
 
+   @Column({ nullable: true })
+   phone?: string
+
 
    @ManyToMany(() => RoleEntity, role => role.users)
    @JoinTable()
    roles?: RoleEntity[];
+
+   @OneToMany(() => ContestEntity, contest => contest.user)
+   contest?: ContestEntity[]
 }

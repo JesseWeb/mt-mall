@@ -36,11 +36,11 @@ export class RoleService extends BaseProvider {
             const subQuery = qb.subQuery()
                .from('user_roles_role', 'user_role')
                .select(`user_role.roleId`)
-               .where('user_role.uesrId = :userId')
+               .where('user_role.userId = :userId')
                .getQuery()
-               return `role.id in ${subQuery}` 
+            return `role.id in ${subQuery}`
          })
-         .setParameter('userId',`user_role.userId`)
+         .setParameter('userId', `user_role.userId`)
          .getOne()
 
 
@@ -52,11 +52,14 @@ export class RoleService extends BaseProvider {
       // .select(['role.name', 'role.id', 'users.nickname', 'users.id'])
       // .getOne()
    }
+   findOneRole(id: string | number | Date | ObjectID) {
+      return this.roleRepo.findOne(id)
+   }
    save(roleEntity: RoleEntity) {
       return this.roleRepo.save(roleEntity)
    }
 
-   softDelete(id:number){
+   softDelete(id: number) {
       return this.roleRepo.softDelete(id)
    }
 }

@@ -13,11 +13,11 @@ export class RoleController {
    @Post()
    async createRole(@Body() body: CreateRoleDto) {
       try {
-         await this.roleService.create({ name: body.name })
+         console.log(body)
+         return await this.roleService.create({ name: body.name })
       } catch (error) {
          throw error
       }
-      return `success`
    }
 
    @Get('get_all')
